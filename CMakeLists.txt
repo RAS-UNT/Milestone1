@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(reservation_app
     src/main.cpp
     src/Reservation.cpp
+    src/ReservationList.cpp
 )
 
 target_include_directories(reservation_app PRIVATE src)
-
