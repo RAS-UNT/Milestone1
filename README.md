@@ -31,10 +31,10 @@ src/
   ReservationList.h / .cpp  - linked list implementation
   ReservationSystem.h / .cpp - reservation feature layer
   stack.h / .cpp             - cancellation history (stack)
-  WaitingList.h / .cpp        - waiting list (queue) — AQani
-  Resource.h / .cpp           - resource management — AQani
+  WaitingList.h / .cpp        - waiting list (queue) 
+  Resource.h / .cpp           - resource management 
 tests/
-  ReservationEdgeCaseTests.cpp - edge case tests — Rami
+  ReservationEdgeCaseTests.cpp - edge case tests 
 CMakeLists.txt               - build configuration
 ```
 
