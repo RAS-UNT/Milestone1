@@ -1,10 +1,9 @@
 #include "Reservation.h"
-#include "ReservationList.h"
+#include "ReservationSystem.h"
 #include <iostream>
 
 int main() {
-    ReservationList reservations;
-
+    ReservationSystem reservationSystem;
     Reservation firstReservation{
         1,
         "Sample Customer",
@@ -21,25 +20,25 @@ int main() {
         2
     };
 
-    if (!reservations.insert(firstReservation)) {
+    if (!reservationSystem.createReservation(firstReservation)) {
         std::cout << "First reservation is invalid.\n";
     }
 
-    if (!reservations.insert(secondReservation)) {
+    if (!reservationSystem.createReservation(secondReservation)) {
         std::cout << "Second reservation is invalid.\n";
     }
 
     std::cout << "Current reservations:\n";
-    reservations.displayAll();
+    reservationSystem.displayReservations();
 
-    if (reservations.remove(1)) {
+    if (reservationSystem.cancelReservation(1)) {
         std::cout << "Reservation #1 removed.\n\n";
     } else {
         std::cout << "Reservation #1 was not found.\n\n";
     }
 
     std::cout << "Reservations after removal:\n";
-    reservations.displayAll();
+    reservationSystem.displayReservations();
 
     return 0;
 }

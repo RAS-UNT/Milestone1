@@ -9,6 +9,7 @@ add_executable(reservation_app
     src/main.cpp
     src/Reservation.cpp
     src/ReservationList.cpp
+    src/ReservationSystem.cpp
 )
 
 target_include_directories(reservation_app PRIVATE src)
