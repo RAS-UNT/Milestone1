@@ -28,7 +28,7 @@ Reservation readReservation() {
     std::cout << "Customer name: ";
     std::getline(std::cin, reservation.customerName);
 
-    std::cout << "Date: ";
+    std::cout << "Date (YYYY-MM-DD): ";
     std::getline(std::cin, reservation.date);
 
     std::cout << "Time: ";
@@ -65,7 +65,8 @@ int main() {
             } else if (reservationSystem.createReservation(reservation)) {
                 std::cout << "Reservation created.\n";
             } else {
-                std::cout << "Reservation is invalid.\n";
+                std::cout << "Reservation is invalid. Use a positive ID, a valid date, "
+                          << "a time, a name, and a party size above 0.\n";
             }
         } else if (choice == 2) {
             int reservationId = 0;
