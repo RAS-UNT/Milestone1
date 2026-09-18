@@ -24,15 +24,20 @@ recently cancelled reservation (undo). Built using CMake.
 
 ## Project Structure
 
+## Project Structure
+```
 src/
-main.cpp - console menu and user input
-Reservation.h / .cpp - reservation data, validation, display
-ReservationList.h / .cpp - linked list implementation
-ReservationSystem.h / .cpp - reservation feature layer
-stack.h / .cpp - cancellation history (stack)
-[queue files] - waiting list — AQani
-[resource files] - resource management — AQani
-CMakeLists.txt - build configuration
+  main.cpp                  - console menu and user input
+  Reservation.h / .cpp      - reservation data, validation, display
+  ReservationList.h / .cpp  - linked list implementation
+  ReservationSystem.h / .cpp - reservation feature layer
+  stack.h / .cpp             - cancellation history (stack)
+  WaitingList.h / .cpp        - waiting list (queue) — AQani
+  Resource.h / .cpp           - resource management — AQani
+tests/
+  ReservationEdgeCaseTests.cpp - edge case tests — Rami
+CMakeLists.txt               - build configuration
+```
 
 
 ## Validation Rules
