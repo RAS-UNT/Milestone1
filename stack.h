@@ -1,12 +1,14 @@
 #ifndef CANCELLATION_STACK_H
 #define CANCELLATION_STACK_H
 
-#include "reservation.h"
+#include "Reservation.h"
+#include <string>
 
-// Singly linked node — the stack is linked-list-backed so it has no fixed
-// size limit and matches the style of the rest of the project.
+// Singly linked node. Each node holds a cancelled Reservation plus the
+// time it was cancelled.
 struct StackNode {
-    CancelledReservation data;
+    Reservation reservation;
+    std::string cancellationTime;
     StackNode* next;
 };
 
