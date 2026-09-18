@@ -34,6 +34,29 @@ bool ReservationList::insert(const Reservation& reservation) {
     return true;
 }
 
+bool ReservationList::remove(int reservationId) {
+    Node* current = head;
+    Node* previous = nullptr;
+
+    while (current != nullptr && current->data.id != reservationId) {
+        previous = current;
+        current = current->next;
+    }
+
+    if (current == nullptr) {
+        return false;
+    }
+
+    if (previous == nullptr) {
+        head = current->next;
+    } else {
+        previous->next = current->next;
+    }
+
+    delete current;
+    return true;
+}
+
 void ReservationList::traverse(const std::function<void(const Reservation&)>& visit) const {
     Node* current = head;
 
@@ -58,4 +81,3 @@ void ReservationList::displayAll() const {
 bool ReservationList::isEmpty() const {
     return head == nullptr;
 }
-

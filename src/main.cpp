@@ -29,6 +29,16 @@ int main() {
         std::cout << "Second reservation is invalid.\n";
     }
 
+    std::cout << "Current reservations:\n";
+    reservations.displayAll();
+
+    if (reservations.remove(1)) {
+        std::cout << "Reservation #1 removed.\n\n";
+    } else {
+        std::cout << "Reservation #1 was not found.\n\n";
+    }
+
+    std::cout << "Reservations after removal:\n";
     reservations.displayAll();
 
     return 0;

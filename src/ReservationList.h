@@ -7,11 +7,11 @@ class ReservationList {
 public:
     ReservationList();
     ~ReservationList();
-
     ReservationList(const ReservationList& other) = delete;
     ReservationList& operator=(const ReservationList& other) = delete;
 
     bool insert(const Reservation& reservation);
+    bool remove(int reservationId);
     void traverse(const std::function<void(const Reservation&)>& visit) const;
     void displayAll() const;
     bool isEmpty() const;
@@ -26,4 +26,3 @@ private:
 };
 
 #endif
-
