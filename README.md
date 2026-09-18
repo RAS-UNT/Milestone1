@@ -22,7 +22,6 @@ recently cancelled reservation (undo). Built using CMake.
 - Resource loading/display from file
 - Cancellation history (stack) with undo/restore
 
-## Project Structure
 
 ## Project Structure
 ```
