@@ -5,6 +5,10 @@ bool ReservationSystem::createReservation(const Reservation& reservation) {
         return false;
     }
 
+    if (reservationExists(reservation.id)) {
+        return false;
+    }
+
     return reservations.insert(reservation);
 }
 
@@ -20,3 +24,6 @@ bool ReservationSystem::validateReservation(const Reservation& reservation) cons
     return isValidReservation(reservation);
 }
 
+bool ReservationSystem::reservationExists(int reservationId) const {
+    return reservations.findById(reservationId) != nullptr;
+}

@@ -20,12 +20,24 @@ int main() {
         2
     };
 
+    Reservation duplicateReservation{
+        2,
+        "Duplicate Customer",
+        "2026-09-19",
+        "8:00 PM",
+        3
+    };
+
     if (!reservationSystem.createReservation(firstReservation)) {
         std::cout << "First reservation is invalid.\n";
     }
 
     if (!reservationSystem.createReservation(secondReservation)) {
         std::cout << "Second reservation is invalid.\n";
+    }
+
+    if (!reservationSystem.createReservation(duplicateReservation)) {
+        std::cout << "Duplicate reservation was not added.\n";
     }
 
     std::cout << "Current reservations:\n";

@@ -1,6 +1,5 @@
 #include "ReservationList.h"
 #include <iostream>
-
 ReservationList::ReservationList() : head(nullptr) {}
 
 ReservationList::~ReservationList() {
@@ -55,6 +54,20 @@ bool ReservationList::remove(int reservationId) {
 
     delete current;
     return true;
+}
+
+const Reservation* ReservationList::findById(int reservationId) const {
+    Node* current = head;
+
+    while (current != nullptr) {
+        if (current->data.id == reservationId) {
+            return &current->data;
+        }
+
+        current = current->next;
+    }
+
+    return nullptr;
 }
 
 void ReservationList::traverse(const std::function<void(const Reservation&)>& visit) const {

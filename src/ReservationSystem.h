@@ -9,10 +9,10 @@ public:
     bool cancelReservation(int reservationId);
     void displayReservations() const;
     bool validateReservation(const Reservation& reservation) const;
+    bool reservationExists(int reservationId) const;
 
 private:
     ReservationList reservations;
 };
 
 #endif
-
