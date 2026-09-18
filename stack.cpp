@@ -14,8 +14,8 @@ CancellationStack::~CancellationStack() {
 // Called by Reservation Management whenever a reservation is cancelled.
 void CancellationStack::push(const Reservation& res, const std::string& cancellationTime) {
     StackNode* newNode = new StackNode;
-    newNode->data.reservation = res;
-    newNode->data.cancellationTime = cancellationTime;
+    newNode->reservation = res;
+    newNode->cancellationTime = cancellationTime;
     newNode->next = top;
     top = newNode;
     count++;
@@ -30,7 +30,7 @@ bool CancellationStack::restore(Reservation& outReservation) {
         return false;
     }
     StackNode* temp = top;
-    outReservation = temp->data.reservation;
+    outReservation = temp->reservation;
     top = top->next;
     delete temp;
     count--;
@@ -46,10 +46,11 @@ void CancellationStack::display() const {
     StackNode* current = top;
     int position = 1;
     while (current != nullptr) {
-        std::cout << position << ". Reservation #" << current->data.reservation.reservationID
-                   << " | " << current->data.reservation.studentName
-                   << " | " << current->data.reservation.resourceName
-                   << " | Cancelled at: " << current->data.cancellationTime << "\n";
+        std::cout << position << ". Reservation #" << current->reservation.id
+                   << " | " << current->reservation.customerName
+                   << " | " << current->reservation.date << " " << current->reservation.time
+                   << " | Party of " << current->reservation.partySize
+                   << " | Cancelled at: " << current->cancellationTime << "\n";
         current = current->next;
         position++;
     }
