@@ -50,7 +50,10 @@ bool isValidDate(const std::string& date) {
         return false;
     }
 
-    const int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    const int daysInMonth[] = {
+        31, 28, 31, 30, 31, 30,
+        31, 31, 30, 31, 30, 31
+    };
 
     if (month == 2 && isLeapYear(year)) {
         return day <= 29;
