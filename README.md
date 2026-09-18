@@ -1,7 +1,5 @@
 # Reservation System by Badr Rami
 
-This project is a C++ console reservation system built around a custom linked list.
-
 ## Features
 
 - Create reservations
@@ -11,6 +9,7 @@ This project is a C++ console reservation system built around a custom linked li
 - Prevent duplicate reservation IDs
 - Store reservations in a linked list
 - Insert, remove, traverse, and display linked list nodes
+- Tail pointer optimization for O(1) linked list insertion
 
 ## Project Structure
 
@@ -18,6 +17,7 @@ This project is a C++ console reservation system built around a custom linked li
 - `src/Reservation.h` and `src/Reservation.cpp`: reservation data, validation, and display
 - `src/ReservationList.h` and `src/ReservationList.cpp`: linked list implementation
 - `src/ReservationSystem.h` and `src/ReservationSystem.cpp`: reservation feature layer
+- `tests/ReservationEdgeCaseTests.cpp`: edge case test program
 - `CMakeLists.txt`: CMake build configuration
 
 ## Validation Rules
@@ -51,3 +51,16 @@ When the program runs, choose from:
 4. Exit
 
 Dates should follow this format: `YYYY-MM-DD`.
+
+## Edge Case Tests
+
+The test program checks:
+
+- leap year date `2028-02-29` is valid
+- non-leap date `2027-02-29` is invalid
+- invalid February date `2025-02-30` is invalid
+- duplicate reservation IDs are rejected by `createReservation`
+- party size `0` is invalid
+- negative party size is invalid
+- whitespace-only customer names are invalid
+- inserting after removing the tail still works correctly

@@ -1,6 +1,7 @@
 #include "ReservationList.h"
 #include <iostream>
-ReservationList::ReservationList() : head(nullptr) {}
+
+ReservationList::ReservationList() : head(nullptr), tail(nullptr) {}
 
 ReservationList::~ReservationList() {
     Node* current = head;
@@ -21,15 +22,12 @@ bool ReservationList::insert(const Reservation& reservation) {
 
     if (head == nullptr) {
         head = newNode;
+        tail = newNode;
         return true;
     }
 
-    Node* current = head;
-    while (current->next != nullptr) {
-        current = current->next;
-    }
-
-    current->next = newNode;
+    tail->next = newNode;
+    tail = newNode;
     return true;
 }
 
@@ -50,6 +48,10 @@ bool ReservationList::remove(int reservationId) {
         head = current->next;
     } else {
         previous->next = current->next;
+    }
+
+    if (current == tail) {
+        tail = previous;
     }
 
     delete current;

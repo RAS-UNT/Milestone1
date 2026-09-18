@@ -13,3 +13,15 @@ add_executable(reservation_app
 )
 
 target_include_directories(reservation_app PRIVATE src)
+
+add_executable(reservation_tests
+    tests/ReservationEdgeCaseTests.cpp
+    src/Reservation.cpp
+    src/ReservationList.cpp
+    src/ReservationSystem.cpp
+)
+
+target_include_directories(reservation_tests PRIVATE src)
+
+enable_testing()
+add_test(NAME reservation_edge_cases COMMAND reservation_tests)
