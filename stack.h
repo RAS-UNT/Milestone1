@@ -22,6 +22,7 @@ public:
     ~CancellationStack();               // frees any remaining nodes
 
     void push(const Reservation& res, const std::string& cancellationTime);
+    bool peek(Reservation& outReservation) const;
     bool restore(Reservation& outReservation);  // pop + hand back the data; false if empty
     void display() const;
     bool isEmpty() const;

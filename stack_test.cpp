@@ -10,6 +10,9 @@ int main() {
     Reservation r1{101, "Alice Kim", "2026-09-15", "10:00", 4};
     Reservation r2{102, "Ben Lopez", "2026-09-16", "14:00", 2};
     Reservation r3{103, "Chen Wu", "2026-09-17", "09:00", 6};
+    r1.resourceId = 1;
+    r2.resourceId = 2;
+    r3.resourceId = 3;
 
     std::cout << "Test 1: restore on empty stack (should fail gracefully)\n";
     Reservation temp;

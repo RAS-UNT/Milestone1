@@ -17,6 +17,7 @@ public:
     bool enqueue(int studentId, const std::string& studentName, int resourceId);
 
     bool dequeue(WaitingEntry& out);
+    bool dequeueForResource(int resourceId, WaitingEntry& out);
 
     bool removeStudent(int studentId);
 

@@ -73,8 +73,18 @@ bool isValidReservation(const Reservation& reservation) {
 
 void displayReservation(const Reservation& reservation) {
     std::cout << "Reservation #" << reservation.id << '\n'
-              << "Name: " << reservation.customerName << '\n'
+              << "Student: " << reservation.customerName << '\n';
+
+    if (reservation.studentId > 0) {
+        std::cout << "Student ID: " << reservation.studentId << '\n';
+    }
+
+    if (reservation.resourceId > 0) {
+        std::cout << "Resource ID: " << reservation.resourceId << '\n';
+    }
+
+    std::cout
               << "Date: " << reservation.date << '\n'
               << "Time: " << reservation.time << '\n'
-              << "Party size: " << reservation.partySize << '\n';
+              << "Group size: " << reservation.partySize << '\n';
 }

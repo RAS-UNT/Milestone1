@@ -36,6 +36,25 @@ bool WaitingList::dequeue(WaitingEntry& out) {
     return true;
 }
 
+bool WaitingList::dequeueForResource(int resourceId, WaitingEntry& out) {
+    Node* prev = nullptr;
+    Node* cur = front;
+
+    while (cur && cur->data.resourceId != resourceId) {
+        prev = cur;
+        cur = cur->next;
+    }
+
+    if (!cur) return false;
+
+    out = cur->data;
+    if (prev) prev->next = cur->next; else front = cur->next;
+    if (cur == rear) rear = prev;
+    delete cur;
+    count--;
+    return true;
+}
+
 bool WaitingList::removeStudent(int studentId) {
     Node* prev = nullptr;
     Node* cur = front;

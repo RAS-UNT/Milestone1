@@ -32,6 +32,11 @@ bool ReservationList::insert(const Reservation& reservation) {
 }
 
 bool ReservationList::remove(int reservationId) {
+    Reservation removedReservation{};
+    return remove(reservationId, removedReservation);
+}
+
+bool ReservationList::remove(int reservationId, Reservation& removedReservation) {
     Node* current = head;
     Node* previous = nullptr;
 
@@ -43,6 +48,8 @@ bool ReservationList::remove(int reservationId) {
     if (current == nullptr) {
         return false;
     }
+
+    removedReservation = current->data;
 
     if (previous == nullptr) {
         head = current->next;

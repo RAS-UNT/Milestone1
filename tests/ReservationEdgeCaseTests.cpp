@@ -104,12 +104,61 @@ void testTailPointerAfterInsertAndRemove(int& failedTests) {
     expect(list.isEmpty(), "list is empty after removals", failedTests);
 }
 
+void testCampusResourceWorkflow(int& failedTests) {
+    ReservationSystem system;
+
+    expect(
+        system.addResource(1, "Study Room A", "Room", 4),
+        "resource can be added",
+        failedTests
+    );
+
+    Reservation first = makeReservation(30, "Ana", "2026-09-20", "10:00 AM", 3);
+    first.resourceId = 1;
+    first.studentId = 1001;
+
+    expect(
+        system.requestReservation(first) == ReservationRequestResult::Created,
+        "available resource creates active reservation",
+        failedTests
+    );
+    expect(!system.isResourceAvailable(1), "resource is reserved after request", failedTests);
+
+    Reservation second = makeReservation(31, "Ben", "2026-09-20", "11:00 AM", 2);
+    second.resourceId = 1;
+    second.studentId = 1002;
+
+    expect(
+        system.requestReservation(second) == ReservationRequestResult::Waitlisted,
+        "unavailable resource adds student to waiting list",
+        failedTests
+    );
+    expect(system.waitingListSize() == 1, "waiting list stores one student", failedTests);
+
+    expect(system.cancelReservation(30), "active reservation cancels", failedTests);
+    expect(system.isResourceAvailable(1), "resource is available after cancellation", failedTests);
+    expect(system.cancellationHistorySize() == 1, "cancellation history stores cancellation", failedTests);
+
+    expect(
+        system.processNextWaitingReservation(1, 32, "2026-09-20", "11:00 AM", 2),
+        "waiting student can be assigned to available resource",
+        failedTests
+    );
+    expect(system.waitingListSize() == 0, "waiting list is empty after processing", failedTests);
+    expect(!system.isResourceAvailable(1), "resource is reserved after waiting-list processing", failedTests);
+
+    expect(system.cancelReservation(32), "processed waiting reservation cancels", failedTests);
+    expect(system.restoreMostRecentCancellation(), "most recent cancellation restores", failedTests);
+    expect(system.cancellationHistorySize() == 1, "restore removes one history item", failedTests);
+}
+
 int main() {
     int failedTests = 0;
 
     testValidationEdgeCases(failedTests);
     testDuplicateIdRejectionUsesReservationSystem(failedTests);
     testTailPointerAfterInsertAndRemove(failedTests);
+    testCampusResourceWorkflow(failedTests);
 
     if (failedTests > 0) {
         std::cout << failedTests << " reservation edge case test(s) failed.\n";

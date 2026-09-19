@@ -21,6 +21,15 @@ void CancellationStack::push(const Reservation& res, const std::string& cancella
     count++;
 }
 
+bool CancellationStack::peek(Reservation& outReservation) const {
+    if (isEmpty()) {
+        return false;
+    }
+
+    outReservation = top->reservation;
+    return true;
+}
+
 // Pops the most recently cancelled reservation and returns it via outReservation
 // so the caller can re-insert it into the active reservations linked list.
 // Returns false (and leaves outReservation untouched) if nothing to restore.
@@ -48,8 +57,9 @@ void CancellationStack::display() const {
     while (current != nullptr) {
         std::cout << position << ". Reservation #" << current->reservation.id
                    << " | " << current->reservation.customerName
+                   << " | Resource " << current->reservation.resourceId
                    << " | " << current->reservation.date << " " << current->reservation.time
-                   << " | Party of " << current->reservation.partySize
+                   << " | Group size " << current->reservation.partySize
                    << " | Cancelled at: " << current->cancellationTime << "\n";
         current = current->next;
         position++;

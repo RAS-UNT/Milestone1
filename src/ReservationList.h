@@ -12,6 +12,7 @@ public:
 
     bool insert(const Reservation& reservation);
     bool remove(int reservationId);
+    bool remove(int reservationId, Reservation& removedReservation);
     const Reservation* findById(int reservationId) const;
     void traverse(const std::function<void(const Reservation&)>& visit) const;
     void displayAll() const;
