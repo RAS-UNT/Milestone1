@@ -1,0 +1,6 @@
+# id,name,type,capacity
+1,Study Room A,Room,6
+2,Study Room B,Room,4
+3,Computer Lab 101,Lab,30
+4,Projector,Equipment,1
+5,Conference Hall,Room,50
