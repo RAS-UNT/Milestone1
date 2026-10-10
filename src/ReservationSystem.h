@@ -47,6 +47,7 @@ public:
     bool removeFromWaitingList(int studentId);
     bool validateReservation(const Reservation& reservation) const;
     bool validateResourceReservation(const Reservation& reservation) const;
+    const Reservation* findReservationById(int reservationId) const;
     bool reservationExists(int reservationId) const;
     int waitingListSize() const;
     int cancellationHistorySize() const;
