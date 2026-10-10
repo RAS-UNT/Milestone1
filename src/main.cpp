@@ -1,6 +1,7 @@
 #include "ReservationSystem.h"
 #include <iostream>
 #include <limits>
+#include <sstream>
 #include <string>
 
 void clearInput() {
@@ -41,7 +42,8 @@ void displayMenu() {
               << "9. Display waiting list\n"
               << "10. Restore most recent cancellation\n"
               << "11. Display cancellation history\n"
-              << "12. Exit\n"
+              << "12. Search reservation by ID\n"
+              << "13. Exit\n"
               << "Choose an option: ";
 }
 
@@ -110,8 +112,12 @@ int main() {
         std::cin >> choice;
 
         if (std::cin.fail()) {
+            if (std::cin.eof()) {
+                break;
+            }
+
             clearInput();
-            std::cout << "Please enter a number from 1 to 12.\n";
+            std::cout << "Please enter a number from 1 to 13.\n";
             continue;
         }
 
@@ -209,10 +215,27 @@ int main() {
             }
         } else if (choice == 11) {
             reservationSystem.displayCancellationHistory();
-        } else if (choice != 12) {
+        } else if (choice == 12) {
+            int reservationId = 0;
+            std::istringstream input(readLine("Reservation ID to search: "));
+
+            if (!(input >> reservationId) || reservationId <= 0 ||
+                !(input >> std::ws).eof()) {
+                std::cout << "Please enter a positive whole number for the reservation ID.\n";
+                continue;
+            }
+
+            const Reservation* reservation = reservationSystem.findReservationById(reservationId);
+
+            if (reservation != nullptr) {
+                displayReservation(*reservation);
+            } else {
+                std::cout << "Reservation was not found.\n";
+            }
+        } else if (choice != 13) {
             std::cout << "Please choose a valid option.\n";
         }
-    } while (choice != 12);
+    } while (choice != 13);
 
     std::cout << "Goodbye.\n";
     return 0;
