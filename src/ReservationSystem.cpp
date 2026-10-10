@@ -229,8 +229,12 @@ bool ReservationSystem::validateResourceReservation(const Reservation& reservati
            reservation.studentId > 0;
 }
 
+const Reservation* ReservationSystem::findReservationById(int reservationId) const {
+    return reservations.findById(reservationId);
+}
+
 bool ReservationSystem::reservationExists(int reservationId) const {
-    return reservations.findById(reservationId) != nullptr;
+    return findReservationById(reservationId) != nullptr;
 }
 
 int ReservationSystem::waitingListSize() const {
