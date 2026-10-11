@@ -8,7 +8,7 @@ contribution report and complexity analysis.
 
 Run the application from the project folder so it can load `resources.txt`.
 Create a reservation with option 4, then select option 12 to search by its ID.
-Option 13 exits the program.
+Option 15 exits the program; options 13 and 14 open sorting and reports.
 
 An existing ID displays the reservation ID, student name, student ID, resource
 ID, date, time, and group size. An unknown or cancelled ID prints
@@ -56,6 +56,11 @@ handling takes O(m) time and O(m) temporary storage.
 Local verification on 2026-10-11 used a C++17 MSVC Release build with CMake and
 Ninja. The tested source includes search commits through `64fe9b8`. The build
 succeeded, and all four registered CTest suites passed.
+
+That initial result predates final integration. The final merged source also
+passed all five C++ executables and 39 menu cases under WSL/GCC 13.3.0, including
+these same 16 search scenarios. See [Final Testing Results](../TestingResults.md)
+for the current build and verification status.
 
 | Test Suite | Local Result |
 | --- | --- |
