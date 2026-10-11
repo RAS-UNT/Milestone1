@@ -4,7 +4,6 @@
 #include <sstream>
 #include <iostream>
 #include <iomanip>
-#include <cstdlib>
 #include <cctype>
 
 std::string ResourceManager::trim(const std::string& s) {
@@ -15,12 +14,8 @@ std::string ResourceManager::trim(const std::string& s) {
 }
 
 static bool parseInt(const std::string& s, int& out) {
-    if (s.empty()) return false;
-    char* end = nullptr;
-    long v = std::strtol(s.c_str(), &end, 10);
-    if (*end != '\0') return false;
-    out = (int)v;
-    return true;
+    std::istringstream input(s);
+    return (input >> out) && (input >> std::ws).eof();
 }
 
 int ResourceManager::indexOf(int id) const {
@@ -46,6 +41,7 @@ int ResourceManager::loadFromFile(const std::string& filename) {
         std::stringstream ss(line);
         std::string tok;
         while (std::getline(ss, tok, ',')) f.push_back(trim(tok));
+        if (!line.empty() && line.back() == ',') f.push_back("");
 
         int id, cap;
         if (f.size() != 4 || !parseInt(f[0], id) || !parseInt(f[3], cap)) {

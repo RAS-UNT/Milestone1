@@ -1,4 +1,5 @@
 #include "ReservationSystem.h"
+#include "SortMenu.h"
 #include <ctime>
 #include <iomanip>
 #include <sstream>
@@ -38,6 +39,22 @@ bool ReservationSystem::isResourceAvailable(int resourceId) const {
 
 int ReservationSystem::resourceCount() const {
     return resources.count();
+}
+
+void ReservationSystem::runSortMenu() {
+    ::runSortMenu(resources);
+}
+
+const ReservationList& ReservationSystem::getReservations() const {
+    return reservations;
+}
+
+const ResourceManager& ReservationSystem::getResources() const {
+    return resources;
+}
+
+const WaitingList& ReservationSystem::getWaitingList() const {
+    return waitingList;
 }
 
 bool ReservationSystem::createReservation(const Reservation& reservation) {
@@ -148,7 +165,7 @@ bool ReservationSystem::restoreMostRecentCancellation() {
     }
 
     if (reservation.resourceId > 0) {
-        resources.markReserved(reservation.resourceId);
+        resources.markReserved(reservation.resourceId, false);
     }
 
     return true;
@@ -173,7 +190,7 @@ bool ReservationSystem::processNextWaitingReservation(
 
     WaitingEntry entry{};
 
-    if (!waitingList.dequeueForResource(resourceId, entry)) {
+    if (!waitingList.peekForResource(resourceId, entry)) {
         return false;
     }
 
@@ -188,10 +205,10 @@ bool ReservationSystem::processNextWaitingReservation(
     };
 
     if (requestReservation(reservation) != ReservationRequestResult::Created) {
-        waitingList.enqueue(entry.studentId, entry.studentName, entry.resourceId);
         return false;
     }
 
+    waitingList.dequeueForResource(resourceId, entry);
     return true;
 }
 

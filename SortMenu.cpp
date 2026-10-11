@@ -1,18 +1,17 @@
 #include "SortMenu.h"
 #include <iostream>
-#include <limits>
+#include <sstream>
 
 static bool readChoice(const char* prompt, int lo, int hi, int& out) {
     while (true) {
         std::cout << prompt;
-        if (std::cin >> out) {
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::string line;
+        if (!std::getline(std::cin, line)) return false;
+        std::istringstream input(line);
+        if ((input >> out) && (input >> std::ws).eof()) {
             if (out >= lo && out <= hi) return true;
             std::cout << "Invalid choice. Enter a number from " << lo << " to " << hi << ".\n";
         } else {
-            if (std::cin.eof()) return false;
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cout << "Invalid input. Please enter a number.\n";
         }
     }

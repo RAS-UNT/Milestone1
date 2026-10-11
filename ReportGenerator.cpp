@@ -6,7 +6,7 @@
 #include "ReportGenerator.h"
 #include <iostream>
 #include <iomanip>
-#include <limits>
+#include <sstream>
 #include <vector>
 
 // Report 1: all active reservations and the total count.
@@ -85,7 +85,7 @@ void ReportGenerator::mostRequested(const ReservationSystem& sys, int topN) {
 }
 
 // Report 4: how many students are waiting for each resource.
-// Time complexity: O(r * w) for r resources and w waiting students.
+// Time complexity: O(r log r + r * w) for r resources and w waiting students.
 void ReportGenerator::waitingListStatistics(const ReservationSystem& sys) {
     const WaitingList& wl = sys.getWaitingList();
     const ResourceManager& rm = sys.getResources();
@@ -128,15 +128,14 @@ void ReportGenerator::runReportMenu(const ReservationSystem& sys) {
                   << "0. Back\n"
                   << "Enter Choice: ";
 
-        if (!(std::cin >> choice)) {
-            if (std::cin.eof()) return;
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::string line;
+        if (!std::getline(std::cin, line)) return;
+        std::istringstream input(line);
+        if (!(input >> choice) || !(input >> std::ws).eof()) {
             std::cout << "Invalid input. Please enter a number.\n";
             choice = -1;
             continue;
         }
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         if (choice == 1) activeReservations(sys);
         else if (choice == 2) resourceUtilization(sys);

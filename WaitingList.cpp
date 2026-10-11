@@ -12,8 +12,9 @@ WaitingList::~WaitingList() {
 }
 
 bool WaitingList::enqueue(int studentId, const std::string& studentName, int resourceId) {
-    if (studentId <= 0 || studentName.empty() || resourceId <= 0) return false;
-    if (contains(studentId)) return false;       
+    if (studentId <= 0 || resourceId <= 0 ||
+        studentName.find_first_not_of(" \t\r\n\f\v") == std::string::npos) return false;
+    if (contains(studentId)) return false;
     Node* n = new Node;
     n->data.studentId = studentId;
     n->data.studentName = studentName;
@@ -77,6 +78,24 @@ bool WaitingList::contains(int studentId) const {
     for (Node* c = front; c; c = c->next)
         if (c->data.studentId == studentId) return true;
     return false;
+}
+
+bool WaitingList::peekForResource(int resourceId, WaitingEntry& out) const {
+    for (Node* c = front; c; c = c->next) {
+        if (c->data.resourceId == resourceId) {
+            out = c->data;
+            return true;
+        }
+    }
+    return false;
+}
+
+int WaitingList::countForResource(int resourceId) const {
+    int matching = 0;
+    for (Node* c = front; c; c = c->next) {
+        if (c->data.resourceId == resourceId) matching++;
+    }
+    return matching;
 }
 
 void WaitingList::display() const {

@@ -28,6 +28,10 @@ public:
     bool resourceExists(int resourceId) const;
     bool isResourceAvailable(int resourceId) const;
     int resourceCount() const;
+    void runSortMenu();
+    const ReservationList& getReservations() const;
+    const ResourceManager& getResources() const;
+    const WaitingList& getWaitingList() const;
 
     bool createReservation(const Reservation& reservation);
     ReservationRequestResult requestReservation(const Reservation& reservation);

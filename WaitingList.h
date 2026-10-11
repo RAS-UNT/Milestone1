@@ -22,6 +22,8 @@ public:
     bool removeStudent(int studentId);
 
     bool peek(WaitingEntry& out) const;
+    bool peekForResource(int resourceId, WaitingEntry& out) const;
+    int countForResource(int resourceId) const;
     bool contains(int studentId) const;
     bool isEmpty() const { return count == 0; }
     int size() const { return count; }

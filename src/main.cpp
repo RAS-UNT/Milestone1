@@ -1,25 +1,15 @@
 #include "ReservationSystem.h"
+#include "ReportGenerator.h"
 #include <iostream>
-#include <limits>
 #include <sstream>
 #include <string>
 
-void clearInput() {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-}
-
 bool readInt(const std::string& prompt, int& value) {
     std::cout << prompt;
-    std::cin >> value;
-
-    if (std::cin.fail()) {
-        clearInput();
-        return false;
-    }
-
-    clearInput();
-    return true;
+    std::string line;
+    if (!std::getline(std::cin, line)) return false;
+    std::istringstream input(line);
+    return (input >> value) && (input >> std::ws).eof();
 }
 
 std::string readLine(const std::string& prompt) {
@@ -43,7 +33,9 @@ void displayMenu() {
               << "10. Restore most recent cancellation\n"
               << "11. Display cancellation history\n"
               << "12. Search reservation by ID\n"
-              << "13. Exit\n"
+              << "13. Sort resources\n"
+              << "14. Generate reports\n"
+              << "15. Exit\n"
               << "Choose an option: ";
 }
 
@@ -109,19 +101,15 @@ int main() {
 
     do {
         displayMenu();
-        std::cin >> choice;
-
-        if (std::cin.fail()) {
+        if (!readInt("", choice)) {
             if (std::cin.eof()) {
                 break;
             }
 
-            clearInput();
-            std::cout << "Please enter a number from 1 to 13.\n";
+            choice = 0;
+            std::cout << "Please enter a number from 1 to 15.\n";
             continue;
         }
-
-        clearInput();
 
         if (choice == 1) {
             std::string filename = readLine("Resource file name: ");
@@ -232,10 +220,14 @@ int main() {
             } else {
                 std::cout << "Reservation was not found.\n";
             }
-        } else if (choice != 13) {
+        } else if (choice == 13) {
+            reservationSystem.runSortMenu();
+        } else if (choice == 14) {
+            ReportGenerator::runReportMenu(reservationSystem);
+        } else if (choice != 15) {
             std::cout << "Please choose a valid option.\n";
         }
-    } while (choice != 13);
+    } while (choice != 15);
 
     std::cout << "Goodbye.\n";
     return 0;

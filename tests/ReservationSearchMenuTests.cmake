@@ -50,51 +50,51 @@ endfunction()
 set(create_reservation "4\n101\n1001\nRami\n1\n2028-02-29\n10:00\n2\n")
 set(invalid_id_message "Please enter a positive whole number for the reservation ID.")
 
-run_menu_case(existing_id "${create_reservation}12\n101\n13\n"
+run_menu_case(existing_id "${create_reservation}12\n101\n15\n"
     EXPECT "Reservation created." "Reservation #101" "Student: Rami"
         "Student ID: 1001" "Resource ID: 1" "Date: 2028-02-29"
         "Time: 10:00" "Group size: 2"
     REJECT "Reservation was not found." "${invalid_id_message}"
 )
 
-run_menu_case(missing_id "${create_reservation}12\n999\n13\n"
+run_menu_case(missing_id "${create_reservation}12\n999\n15\n"
     EXPECT "Reservation created." "Reservation was not found."
     REJECT "Reservation #101" "${invalid_id_message}"
 )
 
-run_menu_case(empty_list "12\n101\n13\n"
+run_menu_case(empty_list "12\n101\n15\n"
     EXPECT "Reservation was not found."
     REJECT "Reservation #101" "${invalid_id_message}"
 )
 
-run_menu_case(whitespace_around_id "${create_reservation}12\n 101 \n13\n"
+run_menu_case(whitespace_around_id "${create_reservation}12\n 101 \n15\n"
     EXPECT "Reservation #101"
     REJECT "${invalid_id_message}"
 )
 
-run_menu_case(cancelled_id "${create_reservation}5\n101\n12\n101\n13\n"
+run_menu_case(cancelled_id "${create_reservation}5\n101\n12\n101\n15\n"
     EXPECT "Reservation canceled and stored in cancellation history." "Reservation was not found."
     REJECT "Reservation #101"
 )
 
-run_menu_case(restored_id "${create_reservation}5\n101\n10\n12\n101\n13\n"
+run_menu_case(restored_id "${create_reservation}5\n101\n10\n12\n101\n15\n"
     EXPECT "Most recent cancellation restored." "Reservation #101" "Student: Rami"
     REJECT "Reservation was not found."
 )
 
 foreach(invalid_id IN ITEMS "0" "-1" "abc" "101abc" "101.5" "2147483648")
-    run_menu_case("invalid_${invalid_id}" "${create_reservation}12\n${invalid_id}\n12\n101\n13\n"
+    run_menu_case("invalid_${invalid_id}" "${create_reservation}12\n${invalid_id}\n12\n101\n15\n"
         EXPECT "${invalid_id_message}" "Reservation #101"
         REJECT "Reservation was not found."
     )
 endforeach()
 
-run_menu_case(blank_id "${create_reservation}12\n\n12\n101\n13\n"
+run_menu_case(blank_id "${create_reservation}12\n\n12\n101\n15\n"
     EXPECT "${invalid_id_message}" "Reservation #101"
     REJECT "Reservation was not found."
 )
 
-run_menu_case(whitespace_only_id "${create_reservation}12\n   \n12\n101\n13\n"
+run_menu_case(whitespace_only_id "${create_reservation}12\n   \n12\n101\n15\n"
     EXPECT "${invalid_id_message}" "Reservation #101"
     REJECT "Reservation was not found."
 )

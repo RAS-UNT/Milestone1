@@ -1,5 +1,6 @@
 #include "stack.h"
 #include <iostream>
+#include <cassert>
 
 // Standalone test driver for the Stack component. Not part of the final
 // integrated program — use this to demonstrate your piece works before
@@ -16,12 +17,15 @@ int main() {
 
     std::cout << "Test 1: restore on empty stack (should fail gracefully)\n";
     Reservation temp;
-    history.restore(temp);
+    assert(!history.restore(temp));
+    assert(history.isEmpty());
 
     std::cout << "\nTest 2: push three cancellations\n";
     history.push(r1, "2026-09-14 08:00");
     history.push(r2, "2026-09-14 09:00");
     history.push(r3, "2026-09-14 10:00");
+    assert(history.size() == 3);
+    assert(history.peek(temp) && temp.id == 103);
     history.display();
 
     std::cout << "\nTest 3: restore most recent (should be r3 / Chen Wu)\n";
@@ -31,10 +35,18 @@ int main() {
     history.display();
 
     std::cout << "\nTest 4: push again after a restore, confirm no corruption\n";
+    assert(temp.id == 103 && temp.resourceId == 3);
+    assert(history.size() == 2);
     history.push(r3, "2026-09-14 11:00");
     history.display();
 
     std::cout << "\nCurrent size: " << history.size() << "\n";
+    assert(history.size() == 3);
+    assert(history.restore(temp) && temp.id == 103);
+    assert(history.restore(temp) && temp.id == 102);
+    assert(history.restore(temp) && temp.id == 101);
+    assert(history.isEmpty());
+    assert(!history.restore(temp));
 
     return 0;
 }
