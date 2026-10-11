@@ -79,7 +79,9 @@ cmake --build build
 Run the tests:
 
 ```bash
-ctest --test-dir build --output-on-failure
+cd build
+ctest --output-on-failure
+cd ..
 ```
 
 CTest runs six suites: reservation edge cases, resource/waiting-list components,
