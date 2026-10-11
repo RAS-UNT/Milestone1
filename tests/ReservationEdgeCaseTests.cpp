@@ -67,6 +67,62 @@ void testDuplicateIdRejectionUsesReservationSystem(int& failedTests) {
         "duplicate ID is rejected by createReservation",
         failedTests
     );
+
+    const Reservation* found = system.findReservationById(10);
+    expect(
+        found != nullptr && found->customerName == "Rami" && found->partySize == 2,
+        "search returns the original reservation after duplicate ID rejection",
+        failedTests
+    );
+}
+
+void testReservationSearch(int& failedTests) {
+    ReservationSystem system;
+
+    expect(
+        system.findReservationById(40) == nullptr,
+        "search returns no match for an empty list",
+        failedTests
+    );
+
+    const Reservation entries[] = {
+        makeReservation(40, "Head", "2026-10-11", "10:00 AM", 2),
+        makeReservation(12, "Middle", "2026-10-12", "11:00 AM", 3),
+        makeReservation(99, "Tail", "2026-10-13", "12:00 PM", 4)
+    };
+
+    for (const Reservation& reservation : entries) {
+        expect(
+            system.createReservation(reservation),
+            "search test creates reservation " + std::to_string(reservation.id),
+            failedTests
+        );
+    }
+
+    for (const Reservation& reservation : entries) {
+        const Reservation* found = system.findReservationById(reservation.id);
+        expect(
+            found != nullptr &&
+                found->id == reservation.id &&
+                found->customerName == reservation.customerName &&
+                found->date == reservation.date &&
+                found->time == reservation.time &&
+                found->partySize == reservation.partySize &&
+                found->resourceId == reservation.resourceId &&
+                found->studentId == reservation.studentId,
+            "search returns complete " + reservation.customerName + " reservation",
+            failedTests
+        );
+    }
+
+    expect(system.findReservationById(777) == nullptr, "missing ID has no match", failedTests);
+    expect(system.findReservationById(0) == nullptr, "zero ID has no match", failedTests);
+    expect(system.findReservationById(-1) == nullptr, "negative ID has no match", failedTests);
+    expect(
+        system.reservationExists(40) && system.reservationExists(12) && system.reservationExists(99),
+        "searches leave all reservations active",
+        failedTests
+    );
 }
 
 void testTailPointerAfterInsertAndRemove(int& failedTests) {
@@ -124,6 +180,13 @@ void testCampusResourceWorkflow(int& failedTests) {
     );
     expect(!system.isResourceAvailable(1), "resource is reserved after request", failedTests);
 
+    const Reservation* active = system.findReservationById(30);
+    expect(
+        active != nullptr && active->studentId == 1001 && active->resourceId == 1,
+        "search finds an active campus reservation",
+        failedTests
+    );
+
     Reservation second = makeReservation(31, "Ben", "2026-09-20", "11:00 AM", 2);
     second.resourceId = 1;
     second.studentId = 1002;
@@ -134,8 +197,18 @@ void testCampusResourceWorkflow(int& failedTests) {
         failedTests
     );
     expect(system.waitingListSize() == 1, "waiting list stores one student", failedTests);
+    expect(
+        system.findReservationById(31) == nullptr,
+        "waiting-list request is not returned as an active reservation",
+        failedTests
+    );
 
     expect(system.cancelReservation(30), "active reservation cancels", failedTests);
+    expect(
+        system.findReservationById(30) == nullptr,
+        "cancelled reservation is no longer searchable",
+        failedTests
+    );
     expect(system.isResourceAvailable(1), "resource is available after cancellation", failedTests);
     expect(system.cancellationHistorySize() == 1, "cancellation history stores cancellation", failedTests);
 
@@ -147,8 +220,22 @@ void testCampusResourceWorkflow(int& failedTests) {
     expect(system.waitingListSize() == 0, "waiting list is empty after processing", failedTests);
     expect(!system.isResourceAvailable(1), "resource is reserved after waiting-list processing", failedTests);
 
+    const Reservation* processed = system.findReservationById(32);
+    expect(
+        processed != nullptr && processed->studentId == 1002 && processed->resourceId == 1,
+        "processed waiting-list reservation is searchable",
+        failedTests
+    );
+
     expect(system.cancelReservation(32), "processed waiting reservation cancels", failedTests);
+    expect(system.findReservationById(32) == nullptr, "search excludes the latest cancellation", failedTests);
     expect(system.restoreMostRecentCancellation(), "most recent cancellation restores", failedTests);
+    const Reservation* restored = system.findReservationById(32);
+    expect(
+        restored != nullptr && restored->customerName == "Ben" && restored->partySize == 2,
+        "restored reservation is searchable with its original data",
+        failedTests
+    );
     expect(system.cancellationHistorySize() == 1, "restore removes one history item", failedTests);
 }
 
@@ -157,6 +244,7 @@ int main() {
 
     testValidationEdgeCases(failedTests);
     testDuplicateIdRejectionUsesReservationSystem(failedTests);
+    testReservationSearch(failedTests);
     testTailPointerAfterInsertAndRemove(failedTests);
     testCampusResourceWorkflow(failedTests);
 
