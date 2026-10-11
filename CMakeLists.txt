@@ -48,3 +48,10 @@ enable_testing()
 add_test(NAME reservation_edge_cases COMMAND reservation_tests)
 add_test(NAME resource_waiting_components COMMAND resource_waiting_tests)
 add_test(NAME cancellation_stack_components COMMAND stack_tests)
+add_test(NAME reservation_search_menu
+    COMMAND ${CMAKE_COMMAND}
+        "-DAPP_PATH=$<TARGET_FILE:reservation_app>"
+        "-DTEST_WORK_DIR=${CMAKE_CURRENT_BINARY_DIR}/search-menu-tests"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/ReservationSearchMenuTests.cmake"
+)
+set_tests_properties(reservation_search_menu PROPERTIES TIMEOUT 30)
